@@ -4,14 +4,21 @@ const { Users } = require("../models");
 const { where } = require("sequelize");
 
 async function memberRegister(req, res) {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
   try {
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        status: "Failed",
+        message: "Username, email, and password must be filled",
+        isSuccess: false,
+        data: null,
+      });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const role = "member";
     const newUser = await Users.create({
       username,
+      email,
       password: hashedPassword,
-      role,
     });
     res.status(201).json({
       status: "Success",
@@ -22,22 +29,50 @@ async function memberRegister(req, res) {
       },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
-      isSuccess: false,
-      data: null,
-    });
+    if (
+      err.errors[0].type === "Validation error" &&
+      err.errors[0].validatorName === "isEmail"
+    ) {
+      res.status(400).json({
+        status: "Failed",
+        message: `Fill in your ${err.errors[0].path} correctly`,
+        isSuccess: false,
+        data: null,
+      });
+    } else if (err.errors[0].type === "unique violation") {
+      res.status(409).json({
+        status: "Failed",
+        message: `${err.errors[0].path} already registered`,
+        isSuccess: false,
+        data: null,
+      });
+    } else {
+      res.status(500).json({
+        status: "Failed",
+        message: err.message,
+        isSuccess: false,
+        data: null,
+      });
+    }
   }
 }
 
 async function adminRegister(req, res) {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
   try {
+    if (!username || !email || !password) {
+      return res.status(500).json({
+        status: "Failed",
+        message: "Username, email, and password must be filled",
+        isSuccess: false,
+        data: null,
+      });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const role = "admin";
     const newUser = await Users.create({
       username,
+      email,
       password: hashedPassword,
       role,
     });
@@ -50,22 +85,48 @@ async function adminRegister(req, res) {
       },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
-      isSuccess: false,
-      data: null,
-    });
+    if (
+      err.errors[0].type === "Validation error" &&
+      err.errors[0].validatorName === "isEmail"
+    ) {
+      res.status(400).json({
+        status: "Failed",
+        message: `Fill in your ${err.errors[0].path} correctly`,
+        isSuccess: false,
+        data: null,
+      });
+    } else if (err.errors[0].type === "unique violation") {
+      res.status(409).json({
+        status: "Failed",
+        message: `${err.errors[0].path} already registered`,
+        isSuccess: false,
+        data: null,
+      });
+    } else {
+      res.status(500).json({
+        status: "Failed",
+        message: err.message,
+        isSuccess: false,
+        data: null,
+      });
+    }
   }
 }
 
 async function login(req, res) {
   try {
-    const { username, password } = req.body;
-
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        status: "Failed",
+        message: "Email and password must be filled",
+        isSuccess: false,
+        data: null,
+      });
+    }
     const user = await Users.findOne({
       where: {
-        username,
+        email,
       },
     });
 
@@ -83,6 +144,7 @@ async function login(req, res) {
         {
           id: user.id,
           username: user.username,
+          email: user.email,
           role: user.role,
         },
         process.env.JWT_SECRET,
@@ -96,6 +158,7 @@ async function login(req, res) {
         isSuccess: true,
         data: {
           username: user.username,
+          email: user.email,
           role: user.role,
           token,
           expiresIn: process.env.JWT_EXPIRED,
@@ -110,6 +173,7 @@ async function login(req, res) {
       });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       status: "Failed",
       message: err.message,
