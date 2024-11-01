@@ -10,6 +10,7 @@ router.post(
   usersController.adminRegister
 );
 router.post("/login", usersController.login);
+router.get("/info", authenticate.all, usersController.userInfo);
 // router.get("", usersController.getAllUser);
 // router.get("/:id", usersController.getUserById);
 // router.patch("/:id", usersController.updateUser);

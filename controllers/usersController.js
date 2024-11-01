@@ -3,6 +3,27 @@ const jwt = require("jsonwebtoken");
 const { Users } = require("../models");
 const { where } = require("sequelize");
 
+async function userInfo(req, res) {
+  try {
+    const user = req.user;
+    res.status(200).json({
+      status: "Success",
+      message: "Success get user info",
+      isSuccess: true,
+      data: {
+        user,
+      },
+    });
+  } catch {
+    res.status(500).json({
+      status: "Failed",
+      message: err.message,
+      isSuccess: false,
+      data: null,
+    });
+  }
+}
+
 async function memberRegister(req, res) {
   const { username, email, password } = req.body;
   try {
@@ -287,6 +308,7 @@ module.exports = {
   memberRegister,
   login,
   adminRegister,
+  userInfo,
   getAllUser,
   getUserById,
   updateUser,
