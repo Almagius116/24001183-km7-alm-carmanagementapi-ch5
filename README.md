@@ -41,7 +41,7 @@ Base URL= "localhost:3000/api/v1"
 | POST         | /cars                 | (REQUIRED) name, brand, year, price    | Bearer token (admin or super admin) | Create a new car            |
 | GET          | /cars                 | None                                   | Bearer token (all role)             | Get all car data            |
 | GET          | /cars/:carsId         | None                                   | Bearer token (all role)             | Get car data by id          |
-| PATCH        | /causes/:causeId      | name, brand, year, availability, price | Bearer token (admin or super admin) | Update car data             |
+| PATCH        | /cars/:carsId         | name, brand, year, availability, price | Bearer token (admin or super admin) | Update car data             |
 | DELETE       | /cars/:carsId         | None                                   | Bearer token (admin or super admin) | Delete car data by id       |
 
 ### API Documentation Endpoint
