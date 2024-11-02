@@ -1,0 +1,917 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Car Management API",
+    "version": "1.0.0",
+    "description": "API documentation for management cars"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/users/register": {
+      "post": {
+        "tags": ["Member Registration"],
+        "summary": "Register a new member",
+        "description": "Creates a new member account and returns user details",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "member1"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "member1@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "member1"
+                  }
+                },
+                "required": ["username", "email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Member registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success member register"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newUser": {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "example": "member"
+                            },
+                            "id": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "member1"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "member1@gmail.com"
+                            },
+                            "password": {
+                              "type": "string",
+                              "example": "$2a$10$XTeF99f1jlD4On45rMKE2u2sz.no/sFKm5BDmDXWrErVFyaGJW/ii"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-11-02T02:13:36.391Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-11-02T02:13:36.391Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["User Login"],
+        "summary": "Login user",
+        "description": "Authenticates a user and returns login details along with an access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "user"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Login success"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "username": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        },
+                        "token": {
+                          "type": "string"
+                        },
+                        "expiresIn": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MemberLogin": {
+                    "summary": "Member Login",
+                    "value": {
+                      "status": "Success",
+                      "message": "Login success",
+                      "isSuccess": true,
+                      "data": {
+                        "username": "member1",
+                        "email": "member1@gmail.com",
+                        "role": "member",
+                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mi...",
+                        "expiresIn": "1h"
+                      }
+                    }
+                  },
+                  "AdminLogin": {
+                    "summary": "Admin Login",
+                    "value": {
+                      "status": "Success",
+                      "message": "Login success",
+                      "isSuccess": true,
+                      "data": {
+                        "username": "Admin1",
+                        "email": "Admin1@gmail.com",
+                        "role": "admin",
+                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6My...",
+                        "expiresIn": "1h"
+                      }
+                    }
+                  },
+                  "SuperAdminLogin": {
+                    "summary": "Super Admin Login",
+                    "value": {
+                      "status": "Success",
+                      "message": "Login success",
+                      "isSuccess": true,
+                      "data": {
+                        "username": "superAdmin",
+                        "email": "superAdmin@gmail.com",
+                        "role": "super admin",
+                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MS...",
+                        "expiresIn": "1h"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Wrong password"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User not registered"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/admin-register": {
+      "post": {
+        "tags": ["Admin Registration"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJzdXBlckFkbWluIiwiZW1haWwiOiJzdXBlckFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJzdXBlciBhZG1pbiIsImlhdCI6MTczMDUzNDU0NSwiZXhwIjoxNzMwNTM4MTQ1fQ.Enq3ICe1E4b3_XWdcTJso10-jSIBAcBjVKBELKyt7oo"
+            },
+            "description": "Bearer token for super admin authorization"
+          }
+        ],
+        "summary": "Using super admin for register new admin",
+        "description": "Creates a new admin account only with super admin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "Admin1"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "Admin1@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "Admin1"
+                  }
+                },
+                "required": ["username", "email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Admin registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success admin register"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newUser": {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "example": "admin"
+                            },
+                            "id": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "Admin1"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "Admin1@gmail.com"
+                            },
+                            "password": {
+                              "type": "string",
+                              "example": "$2a$10$caDHjYjrYtKP6MaEKktZPu9SFYeg9lLPd9OvK9mztIslH14z/xjo2"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-11-02T03:25:04.553Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-11-02T03:25:04.553Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars": {
+      "get": {
+        "summary": "Get all cars",
+        "tags": ["Cars"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJzdXBlckFkbWluIiwiZW1haWwiOiJzdXBlckFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJzdXBlciBhZG1pbiIsImlhdCI6MTczMDUzNDU0NSwiZXhwIjoxNzMwNTM4MTQ1fQ.Enq3ICe1E4b3_XWdcTJso10-jSIBAcBjVKBELKyt7oo"
+            },
+            "description": "Bearer token for all user authorization"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of cars",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success get cars data"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "cars": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "brand": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "integer"
+                              },
+                              "availability": {
+                                "type": "boolean"
+                              },
+                              "price": {
+                                "type": "integer"
+                              },
+                              "createdBy": {
+                                "type": "integer"
+                              },
+                              "updatedBy": {
+                                "type": "integer"
+                              },
+                              "deletedBy": {
+                                "type": "integer"
+                              },
+                              "isDeleted": {
+                                "type": "boolean"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "example": [
+                              {
+                                "id": 1,
+                                "name": "contoh1",
+                                "brand": "contoh1",
+                                "year": 2019,
+                                "availability": true,
+                                "price": 180000,
+                                "createdBy": 1,
+                                "updatedBy": null,
+                                "deletedBy": null,
+                                "isDeleted": false,
+                                "createdAt": "2024-11-01T06:48:22.389Z",
+                                "updatedAt": "2024-11-01T06:48:22.389Z"
+                              },
+                              {
+                                "id": 2,
+                                "name": "contoh2",
+                                "brand": "contoh2",
+                                "year": 2018,
+                                "availability": true,
+                                "price": 150000,
+                                "createdBy": 1,
+                                "updatedBy": null,
+                                "deletedBy": null,
+                                "isDeleted": false,
+                                "createdAt": "2024-11-01T07:11:53.613Z",
+                                "updatedAt": "2024-11-01T07:11:53.613Z"
+                              },
+                              {
+                                "id": 3,
+                                "name": "contoh3",
+                                "brand": "contoh3",
+                                "year": 2020,
+                                "availability": true,
+                                "price": 200000,
+                                "createdBy": 1,
+                                "updatedBy": null,
+                                "deletedBy": null,
+                                "isDeleted": false,
+                                "createdAt": "2024-11-02T06:34:10.343Z",
+                                "updatedAt": "2024-11-02T06:34:10.343Z"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Cars"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJzdXBlckFkbWluIiwiZW1haWwiOiJzdXBlckFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJzdXBlciBhZG1pbiIsImlhdCI6MTczMDUzNDU0NSwiZXhwIjoxNzMwNTM4MTQ1fQ.Enq3ICe1E4b3_XWdcTJso10-jSIBAcBjVKBELKyt7oo"
+            },
+            "description": "Bearer token for admin or super admin authorization"
+          }
+        ],
+        "summary": "Create new car data",
+        "description": "Create a new car data with admin access",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "contoh1"
+                  },
+                  "brand": {
+                    "type": "string",
+                    "example": "contoh1"
+                  },
+                  "year": {
+                    "type": "integer",
+                    "example": 2019
+                  },
+                  "price": {
+                    "type": "integer",
+                    "example": 180000
+                  }
+                },
+                "required": ["name", "brand", "year", "price"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success add new car data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success add car data"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newCar": {
+                          "type": "object",
+                          "properties": {
+                            "availability": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "isDeleted": {
+                              "type": "boolean",
+                              "example": false
+                            },
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "contoh1"
+                            },
+                            "brand": {
+                              "type": "string",
+                              "example": "contoh1"
+                            },
+                            "year": {
+                              "type": "integer",
+                              "example": 2019
+                            },
+                            "price": {
+                              "type": "integer",
+                              "example": 180000
+                            },
+                            "createdBy": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-11-01T06:48:22.389Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-11-01T06:48:22.389Z"
+                            },
+                            "updatedBy": {
+                              "type": "integer",
+                              "example": null
+                            },
+                            "deletedBy": {
+                              "type": "integer",
+                              "example": null
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{id}": {
+      "get": {
+        "summary": "Get a car by ID",
+        "tags": ["Cars"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "example": 1 },
+            "description": "ID of a car"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJzdXBlckFkbWluIiwiZW1haWwiOiJzdXBlckFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJzdXBlciBhZG1pbiIsImlhdCI6MTczMDUzNDU0NSwiZXhwIjoxNzMwNTM4MTQ1fQ.Enq3ICe1E4b3_XWdcTJso10-jSIBAcBjVKBELKyt7oo"
+            },
+            "description": "Bearer token for all user authorization"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get car data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success get car data"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "car": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "contoh1"
+                            },
+                            "brand": {
+                              "type": "string",
+                              "example": "contoh1"
+                            },
+                            "year": {
+                              "type": "integer",
+                              "example": 2019
+                            },
+                            "availability": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "price": {
+                              "type": "integer",
+                              "example": 180000
+                            },
+                            "createdBy": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "updatedBy": {
+                              "type": "integer",
+                              "example": null
+                            },
+                            "deletedBy": {
+                              "type": "integer",
+                              "example": null
+                            },
+                            "isDeleted": {
+                              "type": "boolean",
+                              "example": false
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-11-01T06:48:22.389Z"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-11-01T06:48:22.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a car by ID",
+        "tags": ["Cars"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "example": 1 },
+            "description": "ID of a car"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJzdXBlckFkbWluIiwiZW1haWwiOiJzdXBlckFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJzdXBlciBhZG1pbiIsImlhdCI6MTczMDUzNDU0NSwiZXhwIjoxNzMwNTM4MTQ1fQ.Enq3ICe1E4b3_XWdcTJso10-jSIBAcBjVKBELKyt7oo"
+            },
+            "description": "Bearer token for admin or super admin authorization"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "contoh1 updated"
+                  },
+                  "brand": {
+                    "type": "string",
+                    "example": "contoh1 updated"
+                  },
+                  "year": {
+                    "type": "integer",
+                    "example": 2020
+                  },
+                  "price": {
+                    "type": "integer",
+                    "example": 210000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success update car data by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success update car data"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete car by ID",
+        "tags": ["Cars"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "example": 1 },
+            "description": "ID of a car"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJzdXBlckFkbWluIiwiZW1haWwiOiJzdXBlckFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJzdXBlciBhZG1pbiIsImlhdCI6MTczMDUzNDU0NSwiZXhwIjoxNzMwNTM4MTQ1fQ.Enq3ICe1E4b3_XWdcTJso10-jSIBAcBjVKBELKyt7oo"
+            },
+            "description": "Bearer token for admin or super admin authorization"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete car data by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success delete car data"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

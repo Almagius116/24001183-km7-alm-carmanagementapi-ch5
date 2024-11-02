@@ -5,6 +5,7 @@ const cors = require("cors");
 
 const { systemController } = require("./controllers");
 const router = require("./routes");
+const docsRouter = require("./routes/documentationRouter");
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(morgan("dev"));
 
 app.get("/api/v1/health-check", systemController.healthcheck);
 app.use("/api/v1", router);
+app.use("/api-docs", docsRouter);
 app.use(systemController.onLost);
 
 module.exports = app;
